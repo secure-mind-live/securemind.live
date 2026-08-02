@@ -391,6 +391,14 @@ All dashboards (unified, prompt injection, red team, DLP controls) now have cons
 
 ---
 
+### 51. Pluggable Guardrails Pipeline — 4 provider integration
+`security/guardrails_pipeline.py` (562 lines) supports 4 guardrail providers: **Guardrails AI** (guardrails-ai library), **Nemo Guardrails** (NVIDIA NeMo), **Llama Guard** (Meta's safety classifier via Ollama/vLLM), **Claude** (Anthropic's Constitutional AI via API). Providers loaded lazily — only initialized when their env var is set. Pipeline scans both input prompts and output responses. Aggregation modes: `strict` (any block = block) or `majority` (majority vote). Missing dependencies handled gracefully. No competitor integrates 4 external guardrail providers into a unified pipeline.
+
+### 52. Automated Eval Loop — hallucination scoring + security eval
+`security/eval_loop.py` (584 lines) evaluates AI responses across 4 dimensions: faithfulness (sticks to context), factual accuracy (verifiable against golden data), relevance (answers the question), security compliance (no PII/credential leakage). Supports 4 eval backends: **RAGAS**, **DeepEval**, **TruLens**, **built-in** (regex + heuristic, no deps). Golden dataset format in YAML. Configurable threshold (default 0.7). Auto-logs evaluation results. No competitor has an automated eval loop integrated into the DLP pipeline.
+
+---
+
 ## How We're Different From LangSmith, LangChain, Cursor, Claude Code, Cisco, IBM, Microsoft
 
 | Platform | What They Do | What's Missing | How SecureMind Is Different |
@@ -458,7 +466,7 @@ SecureMind is the only player in the **local + actions** quadrant.
 
 ---
 
-## By the Numbers (v4.36.0 — July 2026)
+## By the Numbers (v4.37.0 — July 2026)
 
 | Metric | Value |
 |---|---|
@@ -477,7 +485,7 @@ SecureMind is the only player in the **local + actions** quadrant.
 | Audit entries analyzed | 18,250 |
 | Test suites (AgnosticSecurity) | 31 files |
 | Test suites (securityagent-core) | 50 files |
-| **Total tests** | **1,117** across 31 suites |
+| **Total tests** | **1,201** across 32 suites |
 | Core tests | 263 |
 | Gateway + enterprise tests | 101 (46 gateway DLP + 25 enterprise privacy + 30 FP/TP) |
 | RBAC + smart redaction tests | 95 |
@@ -493,14 +501,14 @@ SecureMind is the only player in the **local + actions** quadrant.
 | Permit system tests | 39 (minting, attenuation, TTL, cascade revoke, request limits, chain depth) |
 | LLM proxy tests | 33 (10 modules) |
 | Provider routes tests | 27 (models + routes + pipeline) |
-| VS Code extension | v4.36.0 (refactored: editGuard + contentGuardian + reportPanel) |
+| VS Code extension | v4.37.0 (refactored: editGuard + contentGuardian + reportPanel) |
 | Chrome extension | v4.30.1, 12 LLM sites, consent modal UI, file upload consent |
-| Package version | **4.36.0** (PyPI published) |
+| Package version | **4.37.0** (PyPI published) |
 | PII types | 14 core + 4 new (SendGrid, Twilio SID, Slack webhook, MongoDB SRV) |
 | Live demo speed | 0.2s (`--no-llm`), 26s (full with Ollama) |
 | Install time | ~60 seconds (`pip install` + `secagent init`) |
 | Design docs | 19 files (added GETTING_STARTED.md) |
-| Components | **37** |
+| Components | **39** |
 | Security audit findings fixed | 18 (3 HIGH + 9 MEDIUM + 6 LOW) |
 | Token store encryption | AES-256-GCM at rest |
 | Data directory | `~/.agnosticsecurity/` (configurable via `EA_DATA_DIR`) |
@@ -517,7 +525,9 @@ SecureMind is the only player in the **local + actions** quadrant.
 | India AI Governance | 8 compliant, 14 partial, 0 gaps |
 | Banking DLP | 6 new types (OTP, bank a/c, UPI, CVV, PIN, bank login) |
 | Red team patterns | 274 + 60 new = **334 injection patterns** |
-| **Differentiators** | **49** |
+| Guardrails pipeline | 4 providers (Guardrails AI, Nemo, Llama Guard, Claude), 562 lines |
+| Eval loop | 4 backends (RAGAS, DeepEval, TruLens, built-in), 584 lines |
+| **Differentiators** | **52** |
 
 ---
 
@@ -710,4 +720,4 @@ securityagent-core/src/
 - [Top AI Security Platforms 2026](https://accuknox.com/blog/top-10-ai-security-platforms-2026)
 
 ---
-*Last updated: 2026-07-22*
+*Last updated: 2026-08-02*
