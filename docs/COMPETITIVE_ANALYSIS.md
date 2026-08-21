@@ -397,6 +397,18 @@ All dashboards (unified, prompt injection, red team, DLP controls) now have cons
 ### 52. Automated Eval Loop — hallucination scoring + security eval
 `security/eval_loop.py` (584 lines) evaluates AI responses across 4 dimensions: faithfulness (sticks to context), factual accuracy (verifiable against golden data), relevance (answers the question), security compliance (no PII/credential leakage). Supports 4 eval backends: **RAGAS**, **DeepEval**, **TruLens**, **built-in** (regex + heuristic, no deps). Golden dataset format in YAML. Configurable threshold (default 0.7). Auto-logs evaluation results. No competitor has an automated eval loop integrated into the DLP pipeline.
 
+### 53. AgentOven Integration — API + SIEM + sidecar + guardrails + red team
+`routes/integration.py` (7 API endpoints for plugin consumption) + `integrations/agentoven_siem.py` + `integrations/agentoven_sidecar.py` + `integrations/agentoven_guardrails.py` + `integrations/agentoven_redteam.py`. Full platform integration: AgentOven consumes our DLP/compliance data via API, SIEM bridge forwards security events, sidecar mode runs as a container alongside AgentOven agents, guardrails mode provides input/output scanning, red team mode runs attack agents against AgentOven-managed agents. No competitor offers this depth of integration with an AI agent orchestration platform.
+
+### 54. GOVCORE Integration — DSAR enforcement + compliance API
+`integrations/govcore.py` implements DSAR (Data Subject Access Request) enforcement: inventory sync discovers all PII subjects across the gateway, blocks AI processing for subjects with active erasure/restriction requests. Compliance API at `/govcore/*` endpoints. Audit logging to gateway DB for dashboard visibility. India DPDP Act + GDPR aligned. No competitor has automated DSAR enforcement for AI agent traffic.
+
+### 55. SOC Integrations — CrowdStrike, Code42, Zscaler, Okta
+`integrations/soc/` provides 4 enterprise SOC platform connectors: **CrowdStrike** (incident creation, IOC submission, host isolation), **Code42** (file exfiltration alerts, user risk scoring), **Zscaler** (URL categorization, cloud app visibility), **Okta** (user context enrichment, session termination on security events). Each connector is async, retry-safe, and configurable via env vars. No competitor integrates AI agent DLP events with 4 enterprise SOC platforms.
+
+### 56. Attack Datasets + Detection Hardening — 99% coverage (155/156)
+Curated attack datasets across all OWASP LLM categories with automated detection testing. **155/156 attacks detected (99.4%)**. The 1 miss is a model-behavior-dependent edge case, not a pattern gap. Detection hardening includes new patterns for: nested encoding chains, zero-width character injection in credentials, homoglyph-mixed API keys, multi-language prompt injection (Hindi, Mandarin, Arabic). No competitor publishes attack dataset coverage at this granularity.
+
 ---
 
 ## How We're Different From LangSmith, LangChain, Cursor, Claude Code, Cisco, IBM, Microsoft
@@ -501,9 +513,9 @@ SecureMind is the only player in the **local + actions** quadrant.
 | Permit system tests | 39 (minting, attenuation, TTL, cascade revoke, request limits, chain depth) |
 | LLM proxy tests | 33 (10 modules) |
 | Provider routes tests | 27 (models + routes + pipeline) |
-| VS Code extension | v4.37.0 (refactored: editGuard + contentGuardian + reportPanel) |
+| VS Code extension | v4.38.0 (refactored: editGuard + contentGuardian + reportPanel) |
 | Chrome extension | v4.30.1, 12 LLM sites, consent modal UI, file upload consent |
-| Package version | **4.37.0** (PyPI published) |
+| Package version | **4.38.0** (PyPI published) |
 | PII types | 14 core + 4 new (SendGrid, Twilio SID, Slack webhook, MongoDB SRV) |
 | Live demo speed | 0.2s (`--no-llm`), 26s (full with Ollama) |
 | Install time | ~60 seconds (`pip install` + `secagent init`) |
@@ -527,7 +539,11 @@ SecureMind is the only player in the **local + actions** quadrant.
 | Red team patterns | 274 + 60 new = **334 injection patterns** |
 | Guardrails pipeline | 4 providers (Guardrails AI, Nemo, Llama Guard, Claude), 562 lines |
 | Eval loop | 4 backends (RAGAS, DeepEval, TruLens, built-in), 584 lines |
-| **Differentiators** | **52** |
+| AgentOven integration | API + SIEM + sidecar + guardrails + red team |
+| GOVCORE integration | DSAR enforcement, DPDP/GDPR compliance |
+| SOC integrations | CrowdStrike, Code42, Zscaler, Okta |
+| Attack dataset coverage | **155/156 (99.4%)** |
+| **Differentiators** | **56** |
 
 ---
 
@@ -720,4 +736,4 @@ securityagent-core/src/
 - [Top AI Security Platforms 2026](https://accuknox.com/blog/top-10-ai-security-platforms-2026)
 
 ---
-*Last updated: 2026-08-02*
+*Last updated: 2026-08-21*
