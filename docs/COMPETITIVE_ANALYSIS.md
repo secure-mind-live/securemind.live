@@ -1,4 +1,4 @@
-# SecureMind Competitive Analysis — AI Agent Security Market (July 2026)
+# SecureMind Competitive Analysis — AI Agent Security Market (August 2026)
 
 ## Market Context
 
@@ -466,7 +466,7 @@ SecureMind is the only player in the **local + actions** quadrant.
 
 ---
 
-## By the Numbers (v4.37.0 — July 2026)
+## By the Numbers (v4.38.0 — August 2026)
 
 | Metric | Value |
 |---|---|
